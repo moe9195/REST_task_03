@@ -48,7 +48,6 @@ class BookingListTest(APITestCase):
 		response = self.client.get(reverse('bookings-list'))
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-
 	def test_response(self):
 		response = self.client.get(reverse('bookings-list'))
 		bookings = Booking.objects.filter(date__gt=date.today())
@@ -58,7 +57,6 @@ class BookingListTest(APITestCase):
 		self.assertEqual(dict(response.data[0]), {"id" : booking.id, "flight" : booking.flight.id, "date": str(booking.date)})
 		booking = bookings[1]
 		self.assertEqual(dict(response.data[1]), {"id" : booking.id, "flight" : booking.flight.id, "date": str(booking.date)})
-
 
 class BookingDetails(APITestCase):
 	def setUp(self):
@@ -123,7 +121,7 @@ class BookingUpdate(APITestCase):
 		response = self.client.put(reverse('update-booking', args=[2]), data)
 		new_booking = Booking.objects.get(id=2)
 		self.assertEqual({"id":old_booking.id, "date":data["date"], "passengers":data["passengers"], "flight":old_booking.flight, "user":old_booking.user}, {"id":new_booking.id, "date":str(new_booking.date), "passengers":new_booking.passengers, "flight":new_booking.flight, "user":new_booking.user})
-		
+
 
 class BookingDelete(APITestCase):
 	def setUp(self):
@@ -189,7 +187,7 @@ class BookingCreate(APITestCase):
 		self.flight1 = Flight.objects.create(**flight1)
 		self.flight2 = Flight.objects.create(**flight2)
 
-		
+
 
 	def test_url_works(self):
 		response = self.client.post(reverse('login'), self.user_data)
@@ -197,7 +195,7 @@ class BookingCreate(APITestCase):
 
 		response = self.client.post(reverse('book-flight', args=[1]), self.data)
 		self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-		
+
 
 	def test_creation_works(self):
 		response = self.client.post(reverse('login'), self.user_data)
@@ -222,8 +220,3 @@ class BookingCreate(APITestCase):
 		self.assertEqual(bookings[1].flight, self.flight2)
 		self.assertEqual(bookings[1].passengers, self.data["passengers"])
 		self.assertEqual(str(bookings[1].date), self.data["date"])
-
-
-
-
-
